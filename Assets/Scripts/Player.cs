@@ -2,25 +2,19 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    private const string JumpComponentName = "Jump";
-    private const string SpeedComponentName = "Speed";
-
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
     private SpriteRenderer _spriteRenderer;
-    private Animator _animator;
     private Rigidbody2D _playerRB;
-
-    public bool isRunning { get; private set; }
+    private PlayerAnimator _playerAnimator;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerRB = GetComponent<Rigidbody2D>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
     }
 
     private void Update()
@@ -40,16 +34,16 @@ public class Player : MonoBehaviour
         if (horizontalMove > 0)
         {
             _spriteRenderer.flipX = false;
-            ActivateRunAnimation(Mathf.Abs(horizontalMove));
+           _playerAnimator.ActivateRunAnimation(Mathf.Abs(horizontalMove));
         }
         else if (horizontalMove < 0)
         {
             _spriteRenderer.flipX = true;
-            ActivateRunAnimation(Mathf.Abs(horizontalMove));
+            _playerAnimator.ActivateRunAnimation(Mathf.Abs(horizontalMove));
         }
         else
         {
-            ActivateRunAnimation(0);
+           _playerAnimator.ActivateRunAnimation(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -70,17 +64,7 @@ public class Player : MonoBehaviour
         if (Mathf.Approximately(_playerRB.velocity.y, 0))
         {
             _playerRB.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-            ActivateJumpingAnimation();
+            _playerAnimator.ActivateJumpingAnimation();
         }
-    }
-
-    private void ActivateRunAnimation(float speed)
-    {
-        _animator.SetFloat(SpeedComponentName, speed);
-    }
-
-    private void ActivateJumpingAnimation()
-    {
-        _animator.SetTrigger(JumpComponentName);
     }
 }

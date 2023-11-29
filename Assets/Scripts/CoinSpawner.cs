@@ -8,7 +8,7 @@ public class CoinSpawner : MonoBehaviour
     {
        foreach (Transform childTransform in transform)
         {
-            Coin newCoin = Instantiate(_template, childTransform.position, Quaternion.identity);
+            Instantiate(_template, childTransform.position, Quaternion.identity);
         }
     }
 }
