@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed;
